@@ -1,10 +1,6 @@
-<div align="center">
-
-<img src="https://user-images.githubusercontent.com/30717818/206506472-340a3497-207f-45a9-9bb7-efb57c4274bc.svg" width="100">
-
 # dotenv
 
-</div>
+<img src="https://user-images.githubusercontent.com/30717818/206506472-340a3497-207f-45a9-9bb7-efb57c4274bc.svg" width="150" align="right">
 
 [![GitHub go.mod Go version of a Go module](https://img.shields.io/github/go-mod/go-version/gowizzard/dotenv.svg)](https://golang.org/) [![Go](https://github.com/gowizzard/dotenv/actions/workflows/go.yml/badge.svg)](https://github.com/gowizzard/dotenv/actions/workflows/go.yml) [![CodeQL](https://github.com/gowizzard/dotenv/actions/workflows/codeql.yml/badge.svg)](https://github.com/gowizzard/dotenv/actions/workflows/codeql.yml) [![CompVer](https://github.com/gowizzard/dotenv/actions/workflows/compver.yml/badge.svg)](https://github.com/gowizzard/dotenv/actions/workflows/compver.yml) [![Go Reference](https://pkg.go.dev/badge/github.com/gowizzard/dotenv.svg)](https://pkg.go.dev/github.com/gowizzard/dotenv) [![Go Report Card](https://goreportcard.com/badge/github.com/gowizzard/dotenv)](https://goreportcard.com/report/github.com/gowizzard/dotenv) [![GitHub issues](https://img.shields.io/github/issues/gowizzard/dotenv)](https://github.com/gowizzard/dotenv/issues) [![GitHub forks](https://img.shields.io/github/forks/gowizzard/dotenv)](https://github.com/gowizzard/dotenv/network) [![GitHub stars](https://img.shields.io/github/stars/gowizzard/dotenv)](https://github.com/gowizzard/dotenv/stargazers) [![GitHub license](https://img.shields.io/github/license/gowizzard/dotenv)](https://github.com/gowizzard/dotenv/blob/master/LICENSE)
 
