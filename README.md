@@ -8,7 +8,7 @@
 
 [![GitHub go.mod Go version of a Go module](https://img.shields.io/github/go-mod/go-version/gowizzard/dotenv.svg)](https://golang.org/) [![Go](https://github.com/gowizzard/dotenv/actions/workflows/go.yml/badge.svg)](https://github.com/gowizzard/dotenv/actions/workflows/go.yml) [![CodeQL](https://github.com/gowizzard/dotenv/actions/workflows/codeql.yml/badge.svg)](https://github.com/gowizzard/dotenv/actions/workflows/codeql.yml) [![CompVer](https://github.com/gowizzard/dotenv/actions/workflows/compver.yml/badge.svg)](https://github.com/gowizzard/dotenv/actions/workflows/compver.yml) [![Go Reference](https://pkg.go.dev/badge/github.com/gowizzard/dotenv/v5.svg)](https://pkg.go.dev/github.com/gowizzard/dotenv/v5) [![Go Report Card](https://goreportcard.com/badge/github.com/gowizzard/dotenv/v5)](https://goreportcard.com/report/github.com/gowizzard/dotenv/v5) [![GitHub issues](https://img.shields.io/github/issues/gowizzard/dotenv)](https://github.com/gowizzard/dotenv/issues) [![GitHub forks](https://img.shields.io/github/forks/gowizzard/dotenv)](https://github.com/gowizzard/dotenv/network) [![GitHub stars](https://img.shields.io/github/stars/gowizzard/dotenv)](https://github.com/gowizzard/dotenv/stargazers) [![GitHub license](https://img.shields.io/github/license/gowizzard/dotenv)](https://github.com/gowizzard/dotenv/blob/master/LICENSE)
 
-With this lightweight library you can read a local file with environment variables into your project. Additionally you can use functions to read the data and the variable will be returned directly in the desired type.
+With this lightweight library you can read a local file with environment variables into your project. Additionally, you can use functions to read the data and the variable will be returned directly in the desired type.
 
 ## Installation
 
@@ -25,6 +25,8 @@ go get github.com/gowizzard/dotenv
 If you want to read your local `.env` file, so you can use these variables in your project, you can use this function for that.
 
 With this function the data will be loaded from the file and set as local variables. After that you can read them with standard functions, or you can use the following functions.
+
+[Here](https://regex101.com/r/SEDjKj/1) you can find the regex expression which is used to read the environment variables.
 
 ```go
 err := dotenv.Import(value.path)
