@@ -9,8 +9,8 @@ import (
 	"regexp"
 )
 
-// Data is to save the environ data.
-type Data struct {
+// data is to save the environ data.
+type data struct {
 	Raw   [][]byte
 	Key   []byte
 	Value []byte
@@ -30,7 +30,7 @@ func Import(path string) error {
 
 	for _, value := range regex.FindAllSubmatch(read, -1) {
 
-		environ := Data{
+		environ := data{
 			Raw: value,
 		}
 
