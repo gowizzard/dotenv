@@ -14,11 +14,14 @@ func Float(key string, bit int) float64 {
 
 	value, ok := os.LookupEnv(key)
 	if ok {
+
 		float, err := strconv.ParseFloat(value, bit)
 		if err != nil {
 			return 0
 		}
+
 		return float
+
 	}
 
 	return 0
