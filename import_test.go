@@ -92,6 +92,13 @@ func TestImport(t *testing.T) {
 					t.Error(err)
 				}
 
+				t.Cleanup(func() {
+					err = os.Remove(value.path)
+					if err != nil {
+						t.Error(err)
+					}
+				})
+
 			}
 
 			err := dotenv.Import(value.path)
@@ -129,6 +136,12 @@ func BenchmarkImport(b *testing.B) {
 		b.Error(err)
 	}
 
+	b.Cleanup(func() {
+		err = os.Remove(path)
+		if err != nil {
+			b.Error(err)
+		}
+	})
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
