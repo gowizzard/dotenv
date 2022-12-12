@@ -20,38 +20,64 @@ func TestImport(t *testing.T) {
 		path     string
 		perm     os.FileMode
 		data     []byte
+		write    bool
+		error    bool
 		expected map[string]string
 	}{
 		{
-			name: "TEST1",
-			path: filepath.Join(os.TempDir(), ".env"),
-			perm: 0666,
-			data: []byte("URL=https://www.test.com/api/v1\nTOKEN=mySecret123456789"),
+			name:  "WITHOUT_QUOTES",
+			path:  filepath.Join(os.TempDir(), ".env"),
+			perm:  0666,
+			data:  []byte("TEST1=value\nTEST2=25"),
+			write: true,
+			error: false,
 			expected: map[string]string{
-				"URL":   "https://www.test.com/api/v1",
-				"TOKEN": "mySecret123456789",
+				"TEST1": "value",
+				"TEST2": "25",
 			},
 		},
 		{
-			name: "TEST2",
-			path: filepath.Join(os.TempDir(), ".env"),
-			perm: 0666,
-			data: []byte("SMTP_HOST='mail.mailcow.org'\nSMTP_PORT='587'\nSMTP_USERNAME='hello@mailcow.org'\nSMTP_PASSWORD='test12345'"),
+			name:  "SINGLE_QUOTES",
+			path:  filepath.Join(os.TempDir(), ".env"),
+			perm:  0666,
+			data:  []byte("TEST1='value'\nTEST2='25'\nTEST3='42.5'\nTEST4='true'"),
+			write: true,
+			error: false,
 			expected: map[string]string{
-				"SMTP_HOST":     "mail.mailcow.org",
-				"SMTP_PORT":     "587",
-				"SMTP_USERNAME": "hello@mailcow.org",
-				"SMTP_PASSWORD": "test12345",
+				"TEST1": "value",
+				"TEST2": "25",
+				"TEST3": "42.5",
+				"TEST4": "true",
 			},
 		},
 		{
-			name: "TEST3",
-			path: filepath.Join(os.TempDir(), ".env"),
-			perm: 0666,
-			data: []byte("# Language settings\nLANGUAGE=\"de_DE\""),
+			name:  "DOUBLE_QUOTES",
+			path:  filepath.Join(os.TempDir(), ".env"),
+			perm:  0666,
+			data:  []byte("# This is a test command.\nTEST1=\"value\""),
+			write: true,
+			error: false,
 			expected: map[string]string{
-				"LANGUAGE": "de_DE",
+				"TEST1": "value",
 			},
+		},
+		{
+			name:     "FILE_ERROR",
+			path:     "",
+			perm:     0,
+			data:     nil,
+			write:    false,
+			error:    true,
+			expected: nil,
+		},
+		{
+			name:     "SET_ENV_ERROR",
+			path:     filepath.Join(os.TempDir(), ".env"),
+			perm:     0666,
+			data:     []byte("=\"value\""),
+			write:    true,
+			error:    true,
+			expected: nil,
 		},
 	}
 
@@ -59,22 +85,37 @@ func TestImport(t *testing.T) {
 
 		t.Run(value.name, func(t *testing.T) {
 
-			err := os.WriteFile(value.path, value.data, value.perm)
-			if err != nil {
+			if value.write {
+
+				err := os.WriteFile(value.path, value.data, value.perm)
+				if err != nil {
+					t.Error(err)
+				}
+
+				t.Cleanup(func() {
+					err = os.Remove(value.path)
+					if err != nil {
+						t.Error(err)
+					}
+				})
+
+			}
+
+			err := dotenv.Import(value.path)
+			if err != nil && !value.error {
 				t.Error(err)
 			}
 
-			err = dotenv.Import(value.path)
-			if err != nil {
-				t.Error(err)
-			}
+			if !value.error {
 
-			for index, value := range value.expected {
+				for index, value := range value.expected {
 
-				result := os.Getenv(index)
+					result := os.Getenv(index)
 
-				if !reflect.DeepEqual(value, result) {
-					t.Errorf("expected: \"%s\", got \"%s\"", value, result)
+					if !reflect.DeepEqual(value, result) {
+						t.Errorf("expected: \"%s\", got \"%s\"", value, result)
+					}
+
 				}
 
 			}
@@ -95,6 +136,12 @@ func BenchmarkImport(b *testing.B) {
 		b.Error(err)
 	}
 
+	b.Cleanup(func() {
+		err = os.Remove(path)
+		if err != nil {
+			b.Error(err)
+		}
+	})
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
