@@ -9,6 +9,13 @@ vet:
 test:
 	@go test -v --bench=. ./...
 
+cover:
+	@go test -cover ./...
+
+cover-out:
+	@go test -coverprofile cover.out ./...
+	@go tool cover --html=cover.out
+
 lint:
 	@golangci-lint run ./...
 

@@ -19,21 +19,56 @@ func TestFloat(t *testing.T) {
 		key      string
 		value    string
 		bit      int
+		set      bool
 		expected float64
 	}{
 		{
-			name:     "TEST1=\"7.5\"",
+			name:     "7.5",
 			key:      "TEST1",
 			value:    "7.5",
 			bit:      64,
+			set:      true,
 			expected: 7.5,
 		},
 		{
-			name:     "TEST2=\"175.25\"",
+			name:     "175.25",
 			key:      "TEST2",
 			value:    "175.25",
 			bit:      32,
+			set:      true,
 			expected: 175.25,
+		},
+		{
+			name:     "ERROR_64",
+			key:      "TEST3",
+			value:    "error",
+			bit:      64,
+			set:      true,
+			expected: 0,
+		},
+		{
+			name:     "ERROR_32",
+			key:      "TEST4",
+			value:    "error",
+			bit:      32,
+			set:      true,
+			expected: 0,
+		},
+		{
+			name:     "PARSE_ERROR_64",
+			key:      "TEST5",
+			value:    "",
+			bit:      64,
+			set:      false,
+			expected: 0,
+		},
+		{
+			name:     "PARSE_ERROR_32",
+			key:      "TEST6",
+			value:    "",
+			bit:      32,
+			set:      false,
+			expected: 0,
 		},
 	}
 
@@ -41,11 +76,14 @@ func TestFloat(t *testing.T) {
 
 		t.Run(value.name, func(t *testing.T) {
 
-			err := os.Setenv(value.key, value.value)
-			if err != nil {
-				t.Error(err)
+			if value.set {
+
+				t.Setenv(value.key, value.value)
+				t.Cleanup(func() {
+					os.Clearenv()
+				})
+
 			}
-			defer os.Unsetenv(value.key)
 
 			result := dotenv.Float(value.key, value.bit)
 
@@ -64,12 +102,10 @@ func BenchmarkFloat(b *testing.B) {
 
 	key, value, bit := "TEST", "955.5", 64
 
-	err := os.Setenv(key, value)
-	if err != nil {
-		b.Error(err)
-	}
-	defer os.Unsetenv(key)
-
+	b.Setenv(key, value)
+	b.Cleanup(func() {
+		os.Clearenv()
+	})
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
