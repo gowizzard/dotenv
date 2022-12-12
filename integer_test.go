@@ -6,7 +6,6 @@ package dotenv_test
 
 import (
 	"github.com/gowizzard/dotenv"
-	"os"
 	"reflect"
 	"testing"
 )
@@ -18,19 +17,36 @@ func TestInteger(t *testing.T) {
 		name     string
 		key      string
 		value    string
+		set      bool
 		expected int
 	}{
 		{
-			name:     "TEST1=\"0\"",
+			name:     "0",
 			key:      "TEST1",
 			value:    "0",
+			set:      true,
 			expected: 0,
 		},
 		{
-			name:     "TEST2=\"25\"",
+			name:     "25",
 			key:      "TEST2",
 			value:    "25",
+			set:      true,
 			expected: 25,
+		},
+		{
+			name:     "PARSE_ERROR",
+			key:      "TEST3",
+			value:    "error",
+			set:      true,
+			expected: 0,
+		},
+		{
+			name:     "NOT_SET",
+			key:      "TEST4",
+			value:    "",
+			set:      false,
+			expected: 0,
 		},
 	}
 
@@ -38,11 +54,9 @@ func TestInteger(t *testing.T) {
 
 		t.Run(value.name, func(t *testing.T) {
 
-			err := os.Setenv(value.key, value.value)
-			if err != nil {
-				t.Error(err)
+			if value.set {
+				t.Setenv(value.key, value.value)
 			}
-			defer os.Unsetenv(value.key)
 
 			result := dotenv.Integer(value.key)
 
@@ -61,12 +75,7 @@ func BenchmarkInteger(b *testing.B) {
 
 	key, value := "TEST", "175"
 
-	err := os.Setenv(key, value)
-	if err != nil {
-		b.Error(err)
-	}
-	defer os.Unsetenv(key)
-
+	b.Setenv(key, value)
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {

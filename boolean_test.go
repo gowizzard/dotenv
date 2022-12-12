@@ -6,7 +6,6 @@ package dotenv_test
 
 import (
 	"github.com/gowizzard/dotenv"
-	"os"
 	"reflect"
 	"testing"
 )
@@ -18,18 +17,35 @@ func TestBoolean(t *testing.T) {
 		name     string
 		key      string
 		value    string
+		set      bool
 		expected bool
 	}{
 		{
-			name:     "PRODUCTION=\"true\"",
-			key:      "PRODUCTION",
+			name:     "TRUE",
+			key:      "TEST1",
 			value:    "true",
+			set:      true,
 			expected: true,
 		},
 		{
-			name:     "DEVELOPMENT=\"false\"",
-			key:      "DEVELOPMENT",
+			name:     "FALSE",
+			key:      "TEST2",
 			value:    "false",
+			set:      true,
+			expected: false,
+		},
+		{
+			name:     "PARSE_ERROR",
+			key:      "TEST3",
+			value:    "error",
+			set:      true,
+			expected: false,
+		},
+		{
+			name:     "NOT_SET",
+			key:      "",
+			value:    "",
+			set:      false,
 			expected: false,
 		},
 	}
@@ -38,11 +54,9 @@ func TestBoolean(t *testing.T) {
 
 		t.Run(value.name, func(t *testing.T) {
 
-			err := os.Setenv(value.key, value.value)
-			if err != nil {
-				t.Error(err)
+			if value.set {
+				t.Setenv(value.key, value.value)
 			}
-			defer os.Unsetenv(value.key)
 
 			result := dotenv.Boolean(value.key)
 
@@ -59,14 +73,9 @@ func TestBoolean(t *testing.T) {
 // BenchmarkBoolean is to test the Boolean function benchmark timing.
 func BenchmarkBoolean(b *testing.B) {
 
-	key, value := "DEVELOPMENT", "true"
+	key, value := "TEST", "true"
 
-	err := os.Setenv(key, value)
-	if err != nil {
-		b.Error(err)
-	}
-	defer os.Unsetenv(key)
-
+	b.Setenv(key, value)
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {

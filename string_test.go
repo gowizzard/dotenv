@@ -6,7 +6,6 @@ package dotenv_test
 
 import (
 	"github.com/gowizzard/dotenv"
-	"os"
 	"reflect"
 	"testing"
 )
@@ -18,13 +17,22 @@ func TestString(t *testing.T) {
 		name     string
 		key      string
 		value    string
+		set      bool
 		expected string
 	}{
 		{
-			name:     "TEST1=\"value\"",
+			name:     "VALUE",
 			key:      "TEST1",
 			value:    "value",
+			set:      true,
 			expected: "value",
+		},
+		{
+			name:     "NOT_SET",
+			key:      "TEST2",
+			value:    "",
+			set:      false,
+			expected: "",
 		},
 	}
 
@@ -32,11 +40,9 @@ func TestString(t *testing.T) {
 
 		t.Run(value.name, func(t *testing.T) {
 
-			err := os.Setenv(value.key, value.value)
-			if err != nil {
-				t.Error(err)
+			if value.set {
+				t.Setenv(value.key, value.value)
 			}
-			defer os.Unsetenv(value.key)
 
 			result := dotenv.String(value.key)
 
@@ -55,12 +61,7 @@ func BenchmarkString(b *testing.B) {
 
 	key, value := "TEST", "value"
 
-	err := os.Setenv(key, value)
-	if err != nil {
-		b.Error(err)
-	}
-	defer os.Unsetenv(key)
-
+	b.Setenv(key, value)
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
