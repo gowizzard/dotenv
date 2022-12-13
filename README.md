@@ -1,6 +1,6 @@
 # dotenv
 
-<img src="https://user-images.githubusercontent.com/30717818/206506472-340a3497-207f-45a9-9bb7-efb57c4274bc.svg" width="150" align="right">
+<img src="https://user-images.githubusercontent.com/30717818/206506472-340a3497-207f-45a9-9bb7-efb57c4274bc.svg" alt=".ENV" width="150" align="right">
 
 [![GitHub go.mod Go version of a Go module](https://img.shields.io/github/go-mod/go-version/gowizzard/dotenv.svg)](https://golang.org/) [![Go](https://github.com/gowizzard/dotenv/actions/workflows/go.yml/badge.svg)](https://github.com/gowizzard/dotenv/actions/workflows/go.yml) [![CodeQL](https://github.com/gowizzard/dotenv/actions/workflows/codeql.yml/badge.svg)](https://github.com/gowizzard/dotenv/actions/workflows/codeql.yml) [![CompVer](https://github.com/gowizzard/dotenv/actions/workflows/compver.yml/badge.svg)](https://github.com/gowizzard/dotenv/actions/workflows/compver.yml) [![Go Reference](https://pkg.go.dev/badge/github.com/gowizzard/dotenv/v2.svg)](https://pkg.go.dev/github.com/gowizzard/dotenv/v2) [![Go Report Card](https://goreportcard.com/badge/github.com/gowizzard/dotenv/v2)](https://goreportcard.com/report/github.com/gowizzard/dotenv/v2) [![GitHub issues](https://img.shields.io/github/issues/gowizzard/dotenv)](https://github.com/gowizzard/dotenv/issues) [![GitHub forks](https://img.shields.io/github/forks/gowizzard/dotenv)](https://github.com/gowizzard/dotenv/network) [![GitHub stars](https://img.shields.io/github/stars/gowizzard/dotenv)](https://github.com/gowizzard/dotenv/stargazers) [![GitHub license](https://img.shields.io/github/license/gowizzard/dotenv)](https://github.com/gowizzard/dotenv/blob/master/LICENSE)
 
@@ -25,7 +25,7 @@ With this function the data will be loaded from the file and set as local variab
 [Here](https://regex101.com/r/SEDjKj/2) you can find the regex expression which is used to read the environment variables.
 
 ```go
-err := dotenv.Import(value.path)
+err := dotenv.Import(".env")
 if err != nil {
     panic(err)
 }
