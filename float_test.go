@@ -5,7 +5,7 @@
 package dotenv_test
 
 import (
-	"github.com/gowizzard/dotenv"
+	"github.com/gowizzard/dotenv/v2"
 	"os"
 	"reflect"
 	"testing"
