@@ -17,11 +17,14 @@ func Boolean(key string) bool {
 
 	value, ok := os.LookupEnv(key)
 	if ok {
+
 		boolean, err := strconv.ParseBool(value)
 		if err != nil {
 			return false
 		}
+
 		return boolean
+
 	}
 
 	return false
