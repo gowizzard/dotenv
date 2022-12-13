@@ -50,7 +50,7 @@ fmt.Println(result)
 
 ### Float
 
-With this function you can read an environment variable and return it directly as `type float64`. In this function you must not only specify the desired key, but also the bit size of the float type.
+With this function you can read an environment variable and return it directly as `type float64`. In this function you must not only specify the desired key, but also the bit size of the float type. The bit size can be between `0 to 64`.
 
 ```go
 result := dotenv.Float("KEY", 64)
@@ -59,10 +59,10 @@ fmt.Println(result)
 
 ### Integer
 
-With this function you can read an environment variable and return it directly as `type integer`.
+With this function you can read an environment variable and return it directly as `type int64`. In this function, the base and the bit size must be specified in addition to the key. The base must contain one of the following values `0, 2 to 36` and the bit size can be between `0 to 64`. 
 
 ```go
-result := dotenv.Integer("KEY")
+result := dotenv.Integer("KEY", 10, 64)
 fmt.Println(result)
 ```
 

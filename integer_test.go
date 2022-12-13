@@ -18,13 +18,17 @@ func TestInteger(t *testing.T) {
 		name     string
 		key      string
 		value    string
+		base     int
+		size     int
 		set      bool
-		expected int
+		expected int64
 	}{
 		{
 			name:     "0",
 			key:      "TEST1",
 			value:    "0",
+			base:     10,
+			size:     8,
 			set:      true,
 			expected: 0,
 		},
@@ -32,12 +36,16 @@ func TestInteger(t *testing.T) {
 			name:     "25",
 			key:      "TEST2",
 			value:    "25",
+			base:     10,
+			size:     16,
 			set:      true,
 			expected: 25,
 		},
 		{
 			name:     "PARSE_ERROR",
 			key:      "TEST3",
+			base:     10,
+			size:     32,
 			value:    "error",
 			set:      true,
 			expected: 0,
@@ -45,6 +53,8 @@ func TestInteger(t *testing.T) {
 		{
 			name:     "NOT_SET",
 			key:      "TEST4",
+			base:     10,
+			size:     64,
 			value:    "",
 			set:      false,
 			expected: 0,
@@ -64,7 +74,7 @@ func TestInteger(t *testing.T) {
 
 			}
 
-			result := dotenv.Integer(value.key)
+			result := dotenv.Integer(value.key, value.base, value.size)
 
 			if !reflect.DeepEqual(value.expected, result) {
 				t.Errorf("expected: \"%d\", got \"%d\"", value.expected, result)
@@ -79,7 +89,7 @@ func TestInteger(t *testing.T) {
 // BenchmarkInteger is to test the Integer function benchmark timing.
 func BenchmarkInteger(b *testing.B) {
 
-	key, value := "TEST", "175"
+	key, value, base, size := "TEST", "175", 10, 64
 
 	b.Setenv(key, value)
 	b.Cleanup(func() {
@@ -88,7 +98,7 @@ func BenchmarkInteger(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		_ = dotenv.Integer(key)
+		_ = dotenv.Integer(key, base, size)
 	}
 
 }
