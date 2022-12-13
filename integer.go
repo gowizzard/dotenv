@@ -10,12 +10,12 @@ import (
 )
 
 // Integer is to get look up the environment and return is as integer.
-func Integer(key string) int {
+func Integer(key string, base, size int) int64 {
 
 	value, ok := os.LookupEnv(key)
 	if ok {
 
-		integer, err := strconv.Atoi(value)
+		integer, err := strconv.ParseInt(value, base, size)
 		if err != nil {
 			return 0
 		}
