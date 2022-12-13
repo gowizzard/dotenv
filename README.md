@@ -11,7 +11,7 @@ With this lightweight library you can read a local file with environment variabl
 First you have to install the package. You can do this as follows:
 
 ```shell
-go get github.com/gowizzard/dotenv
+go get github.com/gowizzard/dotenv/v2
 ```
 
 ## How to use
