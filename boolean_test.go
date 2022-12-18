@@ -6,7 +6,6 @@ package dotenv_test
 
 import (
 	"github.com/gowizzard/dotenv/v2"
-	"os"
 	"reflect"
 	"testing"
 )
@@ -56,12 +55,7 @@ func TestBoolean(t *testing.T) {
 		t.Run(value.name, func(t *testing.T) {
 
 			if value.set {
-
 				t.Setenv(value.key, value.value)
-				t.Cleanup(func() {
-					os.Clearenv()
-				})
-
 			}
 
 			result := dotenv.Boolean(value.key)
@@ -82,22 +76,10 @@ func BenchmarkBoolean(b *testing.B) {
 	key, value := "TEST", "true"
 
 	b.Setenv(key, value)
-	b.Cleanup(func() {
-		os.Clearenv()
-	})
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
 		_ = dotenv.Boolean(key)
 	}
-
-	b.Cleanup(func() {
-
-		err := os.Unsetenv(key)
-		if err != nil {
-			b.Error(err)
-		}
-
-	})
 
 }

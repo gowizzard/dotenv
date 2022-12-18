@@ -26,7 +26,7 @@ func TestImport(t *testing.T) {
 	}{
 		{
 			name:  "WITHOUT_QUOTES",
-			path:  filepath.Join(os.TempDir(), ".env"),
+			path:  filepath.Join(t.TempDir(), ".env"),
 			perm:  0666,
 			data:  []byte("TEST1=value\nTEST2=25"),
 			write: true,
@@ -38,7 +38,7 @@ func TestImport(t *testing.T) {
 		},
 		{
 			name:  "SINGLE_QUOTES",
-			path:  filepath.Join(os.TempDir(), ".env"),
+			path:  filepath.Join(t.TempDir(), ".env"),
 			perm:  0666,
 			data:  []byte("TEST1='value'\nTEST2='25'\nTEST3='42.5'\nTEST4='true'"),
 			write: true,
@@ -52,7 +52,7 @@ func TestImport(t *testing.T) {
 		},
 		{
 			name:  "DOUBLE_QUOTES",
-			path:  filepath.Join(os.TempDir(), ".env"),
+			path:  filepath.Join(t.TempDir(), ".env"),
 			perm:  0666,
 			data:  []byte("# This is a test command.\nTEST1=\"value\""),
 			write: true,
@@ -72,7 +72,7 @@ func TestImport(t *testing.T) {
 		},
 		{
 			name:     "SET_ENV_ERROR",
-			path:     filepath.Join(os.TempDir(), ".env"),
+			path:     filepath.Join(t.TempDir(), ".env"),
 			perm:     0666,
 			data:     []byte("=\"value\""),
 			write:    true,
@@ -91,13 +91,6 @@ func TestImport(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-
-				t.Cleanup(func() {
-					err = os.Remove(value.path)
-					if err != nil {
-						t.Error(err)
-					}
-				})
 
 			}
 
@@ -124,24 +117,22 @@ func TestImport(t *testing.T) {
 
 	}
 
+	t.Cleanup(func() {
+		os.Clearenv()
+	})
+
 }
 
 // BenchmarkImport is to test the Import function benchmark timing.
 func BenchmarkImport(b *testing.B) {
 
-	path, perm, data := filepath.Join(os.TempDir(), ".env"), os.FileMode(0666), []byte("USERNAME=\"gowizzard\"\nREPO=\"dotenv\"")
+	path, perm, data := filepath.Join(b.TempDir(), ".env"), os.FileMode(0666), []byte("USERNAME=\"gowizzard\"\nREPO=\"dotenv\"")
 
 	err := os.WriteFile(path, data, perm)
 	if err != nil {
 		b.Error(err)
 	}
 
-	b.Cleanup(func() {
-		err = os.Remove(path)
-		if err != nil {
-			b.Error(err)
-		}
-	})
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
@@ -150,5 +141,9 @@ func BenchmarkImport(b *testing.B) {
 			b.Error(err)
 		}
 	}
+
+	b.Cleanup(func() {
+		os.Clearenv()
+	})
 
 }
