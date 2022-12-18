@@ -91,13 +91,4 @@ func BenchmarkBoolean(b *testing.B) {
 		_ = dotenv.Boolean(key)
 	}
 
-	b.Cleanup(func() {
-
-		err := os.Unsetenv(key)
-		if err != nil {
-			b.Error(err)
-		}
-
-	})
-
 }
