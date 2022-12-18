@@ -56,12 +56,7 @@ func TestBoolean(t *testing.T) {
 		t.Run(value.name, func(t *testing.T) {
 
 			if value.set {
-
 				t.Setenv(value.key, value.value)
-				t.Cleanup(func() {
-					os.Clearenv()
-				})
-
 			}
 
 			result := dotenv.Boolean(value.key)
@@ -74,6 +69,10 @@ func TestBoolean(t *testing.T) {
 
 	}
 
+	t.Cleanup(func() {
+		os.Clearenv()
+	})
+
 }
 
 // BenchmarkBoolean is to test the Boolean function benchmark timing.
@@ -82,13 +81,14 @@ func BenchmarkBoolean(b *testing.B) {
 	key, value := "TEST", "true"
 
 	b.Setenv(key, value)
-	b.Cleanup(func() {
-		os.Clearenv()
-	})
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
 		_ = dotenv.Boolean(key)
 	}
+
+	b.Cleanup(func() {
+		os.Clearenv()
+	})
 
 }

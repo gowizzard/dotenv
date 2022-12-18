@@ -77,12 +77,7 @@ func TestFloat(t *testing.T) {
 		t.Run(value.name, func(t *testing.T) {
 
 			if value.set {
-
 				t.Setenv(value.key, value.value)
-				t.Cleanup(func() {
-					os.Clearenv()
-				})
-
 			}
 
 			result := dotenv.Float(value.key, value.size)
@@ -95,6 +90,10 @@ func TestFloat(t *testing.T) {
 
 	}
 
+	t.Cleanup(func() {
+		os.Clearenv()
+	})
+
 }
 
 // BenchmarkFloat is to test the Float function benchmark timing.
@@ -103,13 +102,14 @@ func BenchmarkFloat(b *testing.B) {
 	key, value, size := "TEST", "955.5", 64
 
 	b.Setenv(key, value)
-	b.Cleanup(func() {
-		os.Clearenv()
-	})
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
 		_ = dotenv.Float(key, size)
 	}
+
+	b.Cleanup(func() {
+		os.Clearenv()
+	})
 
 }
