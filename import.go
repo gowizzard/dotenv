@@ -30,9 +30,8 @@ func Import(path string) error {
 
 	for _, value := range regex.FindAllSubmatch(read, -1) {
 
-		environ := data{
-			Raw: value,
-		}
+		environ := new(data)
+		environ.Raw = value
 
 		for index, value := range regex.SubexpNames() {
 			switch value {
