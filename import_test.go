@@ -6,7 +6,6 @@ package dotenv_test
 
 import (
 	"github.com/gowizzard/dotenv/v2"
-	"log"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -85,8 +84,6 @@ func TestImport(t *testing.T) {
 	for _, value := range tests {
 
 		t.Run(value.name, func(t *testing.T) {
-
-			log.Println(value.path)
 
 			if value.write {
 
