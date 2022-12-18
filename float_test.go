@@ -6,7 +6,6 @@ package dotenv_test
 
 import (
 	"github.com/gowizzard/dotenv/v2"
-	"os"
 	"reflect"
 	"testing"
 )
@@ -90,10 +89,6 @@ func TestFloat(t *testing.T) {
 
 	}
 
-	t.Cleanup(func() {
-		os.Clearenv()
-	})
-
 }
 
 // BenchmarkFloat is to test the Float function benchmark timing.
@@ -107,9 +102,5 @@ func BenchmarkFloat(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_ = dotenv.Float(key, size)
 	}
-
-	b.Cleanup(func() {
-		os.Clearenv()
-	})
 
 }

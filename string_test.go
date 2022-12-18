@@ -6,7 +6,6 @@ package dotenv_test
 
 import (
 	"github.com/gowizzard/dotenv/v2"
-	"os"
 	"reflect"
 	"testing"
 )
@@ -55,10 +54,6 @@ func TestString(t *testing.T) {
 
 	}
 
-	t.Cleanup(func() {
-		os.Clearenv()
-	})
-
 }
 
 // BenchmarkString is to test the String function benchmark timing.
@@ -72,9 +67,5 @@ func BenchmarkString(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_ = dotenv.String(key)
 	}
-
-	b.Cleanup(func() {
-		os.Clearenv()
-	})
 
 }

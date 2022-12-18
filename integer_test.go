@@ -6,7 +6,6 @@ package dotenv_test
 
 import (
 	"github.com/gowizzard/dotenv/v2"
-	"os"
 	"reflect"
 	"testing"
 )
@@ -79,10 +78,6 @@ func TestInteger(t *testing.T) {
 
 	}
 
-	t.Cleanup(func() {
-		os.Clearenv()
-	})
-
 }
 
 // BenchmarkInteger is to test the Integer function benchmark timing.
@@ -96,9 +91,5 @@ func BenchmarkInteger(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_ = dotenv.Integer(key, base, size)
 	}
-
-	b.Cleanup(func() {
-		os.Clearenv()
-	})
 
 }

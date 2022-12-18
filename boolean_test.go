@@ -6,7 +6,6 @@ package dotenv_test
 
 import (
 	"github.com/gowizzard/dotenv/v2"
-	"os"
 	"reflect"
 	"testing"
 )
@@ -69,10 +68,6 @@ func TestBoolean(t *testing.T) {
 
 	}
 
-	t.Cleanup(func() {
-		os.Clearenv()
-	})
-
 }
 
 // BenchmarkBoolean is to test the Boolean function benchmark timing.
@@ -86,9 +81,5 @@ func BenchmarkBoolean(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_ = dotenv.Boolean(key)
 	}
-
-	b.Cleanup(func() {
-		os.Clearenv()
-	})
 
 }

@@ -120,6 +120,10 @@ func TestImport(t *testing.T) {
 
 	}
 
+	t.Cleanup(func() {
+		os.Clearenv()
+	})
+
 }
 
 // BenchmarkImport is to test the Import function benchmark timing.
@@ -140,5 +144,9 @@ func BenchmarkImport(b *testing.B) {
 			b.Error(err)
 		}
 	}
+
+	b.Cleanup(func() {
+		os.Clearenv()
+	})
 
 }
