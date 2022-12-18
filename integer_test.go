@@ -6,7 +6,6 @@ package dotenv_test
 
 import (
 	"github.com/gowizzard/dotenv/v2"
-	"os"
 	"reflect"
 	"testing"
 )
@@ -66,12 +65,7 @@ func TestInteger(t *testing.T) {
 		t.Run(value.name, func(t *testing.T) {
 
 			if value.set {
-
 				t.Setenv(value.key, value.value)
-				t.Cleanup(func() {
-					os.Clearenv()
-				})
-
 			}
 
 			result := dotenv.Integer(value.key, value.base, value.size)
@@ -92,9 +86,6 @@ func BenchmarkInteger(b *testing.B) {
 	key, value, base, size := "TEST", "175", 10, 64
 
 	b.Setenv(key, value)
-	b.Cleanup(func() {
-		os.Clearenv()
-	})
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
