@@ -45,7 +45,7 @@ With this function you can read an environment variable and return it directly a
 
 ```go
 result := dotenv.Boolean("KEY")
-fmt.Println(result)
+println(result)
 ```
 
 ### Float
@@ -54,7 +54,7 @@ With this function you can read an environment variable and return it directly a
 
 ```go
 result := dotenv.Float("KEY", 64)
-fmt.Println(result)
+println(result)
 ```
 
 ### Integer
@@ -63,7 +63,7 @@ With this function you can read an environment variable and return it directly a
 
 ```go
 result := dotenv.Integer("KEY", 10, 64)
-fmt.Println(result)
+println(result)
 ```
 
 ### String
@@ -72,7 +72,7 @@ With this function you can read an environment variable and return it directly a
 
 ```go
 result := dotenv.String("KEY")
-fmt.Println(result)
+println(result)
 ```
 
 ## Special thanks
