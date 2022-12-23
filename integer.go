@@ -5,14 +5,14 @@
 package dotenv
 
 import (
-	"os"
 	"strconv"
+	"syscall"
 )
 
 // Integer is to get look up the environment and return is as int64 with different bit sizes.
 func Integer(key string, base, size int) int64 {
 
-	value, ok := os.LookupEnv(key)
+	value, ok := syscall.Getenv(key)
 	if ok {
 
 		integer, err := strconv.ParseInt(value, base, size)

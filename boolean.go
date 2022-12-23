@@ -8,14 +8,14 @@
 package dotenv
 
 import (
-	"os"
 	"strconv"
+	"syscall"
 )
 
 // Boolean is to get look up the environment and return is as boolean.
 func Boolean(key string) bool {
 
-	value, ok := os.LookupEnv(key)
+	value, ok := syscall.Getenv(key)
 	if ok {
 
 		boolean, err := strconv.ParseBool(value)

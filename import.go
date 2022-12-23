@@ -7,6 +7,7 @@ package dotenv
 import (
 	"os"
 	"regexp"
+	"syscall"
 )
 
 // data is to save the environ data.
@@ -42,7 +43,7 @@ func Import(path string) error {
 			}
 		}
 
-		err = os.Setenv(string(environ.Key), string(environ.Value))
+		err = syscall.Setenv(string(environ.Key), string(environ.Value))
 		if err != nil {
 			return err
 		}
