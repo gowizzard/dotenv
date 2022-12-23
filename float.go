@@ -5,14 +5,14 @@
 package dotenv
 
 import (
-	"os"
 	"strconv"
+	"syscall"
 )
 
 // Float is to get look up the environment and return is as float32 or float64.
 func Float(key string, size int) float64 {
 
-	value, ok := os.LookupEnv(key)
+	value, ok := syscall.Getenv(key)
 	if ok {
 
 		float, err := strconv.ParseFloat(value, size)

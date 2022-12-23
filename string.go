@@ -4,12 +4,14 @@
 
 package dotenv
 
-import "os"
+import (
+	"syscall"
+)
 
 // String is to get look up the environment and return value as a string if available.
 func String(key string) string {
 
-	value, ok := os.LookupEnv(key)
+	value, ok := syscall.Getenv(key)
 	if ok {
 		return value
 	}
