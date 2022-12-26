@@ -22,7 +22,7 @@ If you want to read your local `.env` file, so you can use these variables in yo
 
 With this function the data will be loaded from the file and set as local variables. After that you can read them with standard functions, or you can use the following functions.
 
-[Here](https://regex101.com/r/SEDjKj/5) you can find the regex expression which is used to read the environment variables.
+[Here](https://regex101.com/r/SEDjKj/6) you can find the regex expression which is used to read the environment variables.
 
 ```go
 err := dotenv.Import(".env")
