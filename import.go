@@ -18,7 +18,7 @@ type data struct {
 }
 
 // regex is to save the compiled expression.
-var regex = regexp.MustCompile(`(?m)(?P<key>\w*)=["']?(?P<value>.*)(?:"|'|\b)$`)
+var regex = regexp.MustCompile(`(?m)(?P<key>\w+)=["']?(?P<value>.*)(?:["']|\b)$`)
 
 // Import is read the environment variable file and use regex to find
 // all sub matches. After that we initialize the environment variables to local.
