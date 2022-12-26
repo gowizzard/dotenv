@@ -22,7 +22,7 @@ If you want to read your local `.env` file, so you can use these variables in yo
 
 With this function the data will be loaded from the file and set as local variables. After that you can read them with standard functions, or you can use the following functions.
 
-[Here](https://regex101.com/r/SEDjKj/3) you can find the regex expression which is used to read the environment variables.
+[Here](https://regex101.com/r/SEDjKj/5) you can find the regex expression which is used to read the environment variables.
 
 ```go
 err := dotenv.Import(".env")
@@ -45,7 +45,7 @@ With this function you can read an environment variable and return it directly a
 
 ```go
 result := dotenv.Boolean("KEY")
-fmt.Println(result)
+println(result)
 ```
 
 ### Float
@@ -54,7 +54,7 @@ With this function you can read an environment variable and return it directly a
 
 ```go
 result := dotenv.Float("KEY", 64)
-fmt.Println(result)
+println(result)
 ```
 
 ### Integer
@@ -63,7 +63,7 @@ With this function you can read an environment variable and return it directly a
 
 ```go
 result := dotenv.Integer("KEY", 10, 64)
-fmt.Println(result)
+println(result)
 ```
 
 ### String
@@ -72,7 +72,7 @@ With this function you can read an environment variable and return it directly a
 
 ```go
 result := dotenv.String("KEY")
-fmt.Println(result)
+println(result)
 ```
 
 ## Special thanks
