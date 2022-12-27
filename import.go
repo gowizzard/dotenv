@@ -12,13 +12,9 @@ import (
 
 // data is to save the environ data.
 type data struct {
-	Raw   [][]byte
 	Key   []byte
 	Value []byte
 }
-
-// regex is to save the compiled expression.
-var regex = regexp.MustCompile(`(?m)^(?P<key>\w+?)=["']?(?P<value>.*)(?:["']|\b)$`)
 
 // Import is read the environment variable file and use regex to find
 // all sub matches. After that we initialize the environment variables to local.
@@ -29,17 +25,18 @@ func Import(path string) error {
 		return err
 	}
 
+	regex := regexp.MustCompile(`(?m)^(?P<key>\w+?)=["']?(?P<value>.*)(?:["']|\b)$`)
 	for _, value := range regex.FindAllSubmatch(read, -1) {
 
 		environ := new(data)
-		environ.Raw = value
 
-		for index, value := range regex.SubexpNames() {
-			switch value {
+		names := regex.SubexpNames()
+		for index := range names {
+			switch names[index] {
 			case "key":
-				environ.Key = environ.Raw[index]
+				environ.Key = value[index]
 			case "value":
-				environ.Value = environ.Raw[index]
+				environ.Value = value[index]
 			}
 		}
 
