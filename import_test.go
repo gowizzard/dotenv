@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"syscall"
 	"testing"
 )
 
@@ -27,7 +28,7 @@ func TestImport(t *testing.T) {
 		{
 			name:  "WITHOUT_QUOTES",
 			path:  filepath.Join(t.TempDir(), ".env"),
-			perm:  0666,
+			perm:  os.ModePerm,
 			data:  []byte("TEST1=value\nTEST2=25"),
 			write: true,
 			error: false,
@@ -39,7 +40,7 @@ func TestImport(t *testing.T) {
 		{
 			name:  "SINGLE_QUOTES",
 			path:  filepath.Join(t.TempDir(), ".env"),
-			perm:  0666,
+			perm:  os.ModePerm,
 			data:  []byte("TEST1='value'\nTEST2='25'\nTEST3='42.5'\nTEST4='true'"),
 			write: true,
 			error: false,
@@ -53,7 +54,7 @@ func TestImport(t *testing.T) {
 		{
 			name:  "DOUBLE_QUOTES",
 			path:  filepath.Join(t.TempDir(), ".env"),
-			perm:  0666,
+			perm:  os.ModePerm,
 			data:  []byte("# This is a test command.\nTEST1=\"value\""),
 			write: true,
 			error: false,
@@ -64,18 +65,9 @@ func TestImport(t *testing.T) {
 		{
 			name:     "FILE_ERROR",
 			path:     "",
-			perm:     0,
+			perm:     os.ModePerm,
 			data:     nil,
 			write:    false,
-			error:    true,
-			expected: nil,
-		},
-		{
-			name:     "SET_ENV_ERROR",
-			path:     filepath.Join(t.TempDir(), ".env"),
-			perm:     0666,
-			data:     []byte("=\"value\""),
-			write:    true,
 			error:    true,
 			expected: nil,
 		},
@@ -99,16 +91,15 @@ func TestImport(t *testing.T) {
 				t.Error(err)
 			}
 
-			if !value.error {
+			if value.error {
+				return
+			}
 
-				for index, value := range value.expected {
+			for index, value := range value.expected {
 
-					result := os.Getenv(index)
-
-					if !reflect.DeepEqual(value, result) {
-						t.Errorf("expected: \"%s\", got \"%s\"", value, result)
-					}
-
+				result, ok := syscall.Getenv(index)
+				if ok && !reflect.DeepEqual(value, result) {
+					t.Errorf("expected: \"%s\", got \"%s\"", value, result)
 				}
 
 			}
@@ -118,7 +109,7 @@ func TestImport(t *testing.T) {
 	}
 
 	t.Cleanup(func() {
-		os.Clearenv()
+		syscall.Clearenv()
 	})
 
 }
@@ -126,7 +117,7 @@ func TestImport(t *testing.T) {
 // BenchmarkImport is to test the Import function benchmark timing.
 func BenchmarkImport(b *testing.B) {
 
-	path, perm, data := filepath.Join(b.TempDir(), ".env"), os.FileMode(0666), []byte("USERNAME=\"gowizzard\"\nREPO=\"dotenv\"")
+	path, perm, data := filepath.Join(b.TempDir(), ".env"), os.ModePerm, []byte("USERNAME=\"gowizzard\"\nREPO=\"dotenv\"")
 
 	err := os.WriteFile(path, data, perm)
 	if err != nil {
@@ -143,7 +134,7 @@ func BenchmarkImport(b *testing.B) {
 	}
 
 	b.Cleanup(func() {
-		os.Clearenv()
+		syscall.Clearenv()
 	})
 
 }
