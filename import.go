@@ -16,6 +16,9 @@ type data struct {
 	Value []byte
 }
 
+// regex is to save the compiled expression.
+var regex = regexp.MustCompile(`(?m)^(?P<key>\w+?)=["']?(?P<value>.*)(?:["']|\b)$`)
+
 // Import is read the environment variable file and use regex to find
 // all sub matches. After that we initialize the environment variables to local.
 func Import(path string) error {
@@ -25,7 +28,6 @@ func Import(path string) error {
 		return err
 	}
 
-	regex := regexp.MustCompile(`(?m)^(?P<key>\w+?)=["']?(?P<value>.*)(?:["']|\b)$`)
 	for _, value := range regex.FindAllSubmatch(read, -1) {
 
 		environ := new(data)
