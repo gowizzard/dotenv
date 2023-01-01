@@ -91,15 +91,15 @@ func TestImport(t *testing.T) {
 				t.Error(err)
 			}
 
-			if !value.error {
+			if value.error {
+				return
+			}
 
-				for index, value := range value.expected {
+			for index, value := range value.expected {
 
-					result, ok := syscall.Getenv(index)
-					if ok && !reflect.DeepEqual(value, result) {
-						t.Errorf("expected: \"%s\", got \"%s\"", value, result)
-					}
-
+				result, ok := syscall.Getenv(index)
+				if ok && !reflect.DeepEqual(value, result) {
+					t.Errorf("expected: \"%s\", got \"%s\"", value, result)
 				}
 
 			}
