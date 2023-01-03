@@ -5,6 +5,7 @@
 package dotenv
 
 import (
+	"errors"
 	"os"
 	"regexp"
 	"syscall"
@@ -28,7 +29,12 @@ func Import(path string) error {
 		return err
 	}
 
-	for _, value := range regex.FindAllSubmatch(read, -1) {
+	matches := regex.FindAllSubmatch(read, -1)
+	if matches == nil {
+		return errors.New("no matches found")
+	}
+
+	for _, value := range matches {
 
 		environ := new(data)
 
