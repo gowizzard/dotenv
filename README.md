@@ -33,7 +33,7 @@ if err != nil {
 
 ## Read variables
 
-If you don't want to work with the standard golang function `func Getenv(key string) string` from the `os` package, because you want to output the variables directly in a certain type, then you can use the following different functions.
+If you don't want to work with the standard golang function `func Getenv(key string) string` from the `package os` or `func Getenv(key string) (value string, found bool)` from `package syscall`, because you want to output the variables directly in a certain type, then you can use the following different functions.
 
 The functions check directly if the desired variable is available and returns the value. If the value is not available, then the default value of the type is returned.
 

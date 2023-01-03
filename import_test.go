@@ -63,7 +63,16 @@ func TestImport(t *testing.T) {
 			},
 		},
 		{
-			name:     "FILE_ERROR",
+			name:     "NO_MATCHES",
+			path:     filepath.Join(t.TempDir(), ".env"),
+			perm:     os.ModePerm,
+			data:     []byte("=value\n=25"),
+			write:    true,
+			error:    true,
+			expected: nil,
+		},
+		{
+			name:     "FILE_NOT_EXIST",
 			path:     "",
 			perm:     os.ModePerm,
 			data:     nil,
@@ -117,7 +126,7 @@ func TestImport(t *testing.T) {
 // BenchmarkImport is to test the Import function benchmark timing.
 func BenchmarkImport(b *testing.B) {
 
-	path, perm, data := filepath.Join(b.TempDir(), ".env"), os.ModePerm, []byte("USERNAME=\"gowizzard\"\nREPO=\"dotenv\"")
+	path, perm, data := filepath.Join(b.TempDir(), ".env"), os.ModePerm, []byte("TEST1=\"value\"\nTEST2=\"value\"")
 
 	err := os.WriteFile(path, data, perm)
 	if err != nil {
