@@ -29,6 +29,10 @@ func Import(path string) error {
 		return err
 	}
 
+	if len(read) == 0 {
+		return errors.New("file is empty")
+	}
+
 	matches := regex.FindAllSubmatch(read, -1)
 	if matches == nil {
 		return errors.New("no matches found")
