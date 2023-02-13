@@ -5,6 +5,7 @@
 package dotenv_test
 
 import (
+	"errors"
 	"github.com/gowizzard/dotenv/v2"
 	"os"
 	"path/filepath"
@@ -22,7 +23,7 @@ func TestImport(t *testing.T) {
 		perm     os.FileMode
 		data     []byte
 		write    bool
-		error    bool
+		error    error
 		expected map[string]string
 	}{
 		{
@@ -31,7 +32,7 @@ func TestImport(t *testing.T) {
 			perm:  os.ModePerm,
 			data:  []byte("TEST1=value\nTEST2=25"),
 			write: true,
-			error: false,
+			error: nil,
 			expected: map[string]string{
 				"TEST1": "value",
 				"TEST2": "25",
@@ -43,7 +44,7 @@ func TestImport(t *testing.T) {
 			perm:  os.ModePerm,
 			data:  []byte("TEST1='value'\nTEST2='25'\nTEST3='42.5'\nTEST4='true'"),
 			write: true,
-			error: false,
+			error: nil,
 			expected: map[string]string{
 				"TEST1": "value",
 				"TEST2": "25",
@@ -57,7 +58,7 @@ func TestImport(t *testing.T) {
 			perm:  os.ModePerm,
 			data:  []byte("# This is a test command.\nTEST1=\"value\""),
 			write: true,
-			error: false,
+			error: nil,
 			expected: map[string]string{
 				"TEST1": "value",
 			},
@@ -68,7 +69,7 @@ func TestImport(t *testing.T) {
 			perm:     os.ModePerm,
 			data:     nil,
 			write:    false,
-			error:    true,
+			error:    errors.New("open : no such file or directory"),
 			expected: nil,
 		},
 		{
@@ -77,7 +78,7 @@ func TestImport(t *testing.T) {
 			perm:     os.ModePerm,
 			data:     []byte(""),
 			write:    true,
-			error:    true,
+			error:    errors.New("file is empty"),
 			expected: nil,
 		},
 		{
@@ -86,7 +87,7 @@ func TestImport(t *testing.T) {
 			perm:     os.ModePerm,
 			data:     []byte("=value\n=25"),
 			write:    true,
-			error:    true,
+			error:    errors.New("no matches found"),
 			expected: nil,
 		},
 	}
@@ -105,12 +106,8 @@ func TestImport(t *testing.T) {
 			}
 
 			err := dotenv.Import(value.path)
-			if err != nil && !value.error {
-				t.Error(err)
-			}
-
-			if value.error {
-				return
+			if err != nil && !reflect.DeepEqual(value.error.Error(), err.Error()) {
+				t.Errorf("expected error: \"%v\", got \"%s\"", value.error, err)
 			}
 
 			for index, value := range value.expected {
